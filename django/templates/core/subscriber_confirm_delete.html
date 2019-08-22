@@ -11,6 +11,6 @@
   <form class="" action="" method="post">
     {% csrf_token %}
     <input type="submit" value="Да, отказаться" class="btn btn-light">
-    <a class="btn btn-light" href="{% url 'core:manage_mailinglist' pk=mailinglist.id %}">Нет</a>
+    <a class="btn btn-light" href="{% url 'core:manage_mailinglist' pk=object.mailinglist.id %}">Нет</a>
   </form>
 {% endblock %}

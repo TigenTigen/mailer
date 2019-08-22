@@ -64,7 +64,8 @@ class SubscriberDeleteView(DeleteView):
     model = Subscriber
 
     def get_success_url(self):
-        return reverse('core:subscribe_to_mailinglist', kwargs={'pk': self.object.mailinglist.id})
+        mailinglist_id = self.object.mailinglist.id
+        return reverse('core:subscribe_to_mailinglist', args=[mailinglist_id,])
 
 # Massage views
 
