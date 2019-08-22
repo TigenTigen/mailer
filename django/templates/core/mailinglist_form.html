@@ -1,0 +1,16 @@
+{% extends 'layout/wrapper.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Новый список рассылки
+{% endblock %}
+
+{% block content %}
+  <p>Новый список рассылки:</p>
+  <form method="post">
+    {% csrf_token %}
+    {{form | crispy }}
+    <button type="submit" class="btn">Создать</button>
+  </form>
+{% endblock %}

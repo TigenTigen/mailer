@@ -1,0 +1,16 @@
+{% extends 'layout/wrapper.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Удаление списка рассылки
+{% endblock %}
+
+{% block content %}
+  <p>Вы действительно желаете удалить список рассылки "{{mailinglist.name}}"?</p>
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Да" class="btn btn-light">
+    <a class="btn btn-light" href="{% url 'core:manage_mailinglist' pk=mailinglist.id %}">Нет</a>
+  </form>
+{% endblock %}

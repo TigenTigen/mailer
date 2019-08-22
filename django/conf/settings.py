@@ -26,7 +26,9 @@ SECRET_KEY = get_secret(os.getenv('DJANGO_SK_FILE'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['apache', os.getenv('HOST_NAME'), os.getenv('HOST_IP')]
+HOST_NAME = os.getenv('HOST_NAME')
+HOST_IP = os.getenv('HOST_IP')
+ALLOWED_HOSTS = ['apache', HOST_NAME, HOST_IP]
 
 # Application definition
 
@@ -54,7 +56,7 @@ ROOT_URLCONF = 'conf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,19 +110,80 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Krasnoyarsk'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False # disable datetime and numeric internationalization
 
 USE_TZ = True
 
+# Параметры ввода и вывода дат: задано вручную (при отключении USE_L10N)
+DATE_FORMAT = "d.m.Y"
+DATE_INPUT_FORMATS = ['%d.%m.%Y']
+SHORT_DATE_FORMAT = "d.m.Y"
+
+DATETIME_FORMAT = "d.m.Y H:i:s"
+DATETIME_INPUT_FORMATS = ["%d.%m.%Y %H:%M:%S"]
+SHORT_DATETIME_FORMAT = "d.m.Y H:M:s"
+
+TIME_FORMAT = "H:M"
+TIME_INPUT_FORMATS = ["%H:%M"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/static/'
+
+# crispy_forms settings:
+INSTALLED_APPS += ['crispy_forms',]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# user settings
+INSTALLED_APPS = ['user.apps.UserConfig',] + INSTALLED_APPS
+AUTH_USER_MODEL = 'user.AdvUser'
+LOGIN_URL = '/accounts/login/' # адрес, ведущий на страницу входа
+LOGIN_REDIRECT_URL = '/accounts/profile/' # адрес, на который произойдет перенаправление после входа
+LOGOUT_REDIRECT_URL = '/' # адрес, на который произойдет перенаправление после выхода
+
+# core settings
+INSTALLED_APPS += ['core.apps.CoreConfig',]
+
+# Mail settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp'
+#EMAIL_HOST_USER = ''
+#EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
+MAILING_LIST_FROM_EMAIL = 'noreply@mailer.com'
+MAILING_LIST_LINK_DOMAIN = HOST_NAME
+
+# selery settings
+INSTALLED_APPS += ['django_celery_results',]
+CELERY_BROKER_URL = 'redis://redis'
+CELERY_RESULT_BACKEND = 'django-db'
+
+# API settings
+# django_rest_framework settings
+INSTALLED_APPS += ['rest_framework',]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '60/minute',
+        'anon': '30/minute',
+    }
+}

@@ -1,0 +1,28 @@
+{% extends 'layout/wrapper.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Новое сообщение
+{% endblock %}
+
+{% block content %}
+  <p>Новое сообщение для рассылке по списку "{{mailinglist.name}}":</p>
+  {% if massage %}
+    <div class="card my-4">
+      <div class="card-header">
+        Предварительный просмотр сообщения:
+      </div>
+      <div class="card-body">
+        <p class="m-0">Тема: {{massage.subject}}</p>
+        <p class="m-0">{{massage.body}}</p>
+      </div>
+    </div>
+  {% endif %}
+  <form class="my-4" action="" method="post">
+    {% csrf_token %}
+    {{form | crispy }}
+    <button type="submit" class="btn" name="action" value="{{SAVE_ACTION}}">Сохранить</button>
+    <button type="submit" class="btn" name="action" value="{{PREVIEW_ACTION}}">Предварительный просмотр</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'layout/wrapper.html' %}
+
+{% block title %}
+  {{object.name}}
+{% endblock %}
+
+{% block content %}
+  <h2>{{object}}</h2>
+
+  <div class="btn-group mt-2">
+    <a type="button" class="btn btn-light" href="{% url 'core:delete_mailinglist' pk=object.id %}">Удалить список</a>
+    <a type="button" class="btn btn-light" href="{% url 'core:subscribe_to_mailinglist' mailinglist_id=object.id %}">Добавить адрес рассылки</a>
+    <a type="button" class="btn btn-light" href="{% url 'core:create_massage' mailinglist_id=object.id %}">Новое сообщение</a>
+  </div>
+
+  <h4 class="mt-4">Сообщения:</h4>
+  {% if object.massage_set.all %}
+    <div class="row my-2">
+      <div class="col-5">
+        <div class="list-group" id="list-tab" role="tablist">
+          {% for massage in object.massage_set.all %}
+            {% if forloop.counter == 1 %}
+              <a class="list-group-item list-group-item-action p-1 active" id="list-{{forloop.counter}}-list" data-toggle="list" href="#list-{{forloop.counter}}" role="tab" aria-controls="{{forloop.counter}}">
+            {% else %}
+              <a class="list-group-item list-group-item-action p-1" id="list-{{forloop.counter}}-list" data-toggle="list" href="#list-{{forloop.counter}}" role="tab" aria-controls="{{forloop.counter}}">
+            {% endif %}
+              {{massage.subject}}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="tab-content" id="nav-tabContent">
+          {% for massage in object.massage_set.all %}
+            {% if forloop.counter == 1 %}
+              <div class="tab-pane fade show active" id="list-{{forloop.counter}}" role="tabpanel" aria-labelledby="list-{{forloop.counter}}-list">
+            {% else %}
+              <div class="tab-pane fade" id="list-{{forloop.counter}}" role="tabpanel" aria-labelledby="list-{{forloop.counter}}-list">
+            {% endif %}
+              <a href="{% url 'core:view_massage' pk=massage.id %}" class="list-group-item list-group-item-action border-0 p-0">
+                <p class="m-0">Рассылка: 
+                  {% if massage.finished %}
+                    окнончена
+                  {% endif %}
+                </p>
+                {{massage.body|truncatechars:100}}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <p>Вы еще не производили рассылку сообщений по данному списку</p>
+  {% endif %}
+
+  <h4 class="mt-4">Адреса рассылки:</h4>
+  <div class="list-group my-2">
+    {% for subscriber in object.subscriber_set.all %}
+      <a class="list-group-item list-group-item-action">{{subscriber.email}}</a>
+    {% empty %}
+      <p>Список рассылки пуст</p>
+    {% endfor %}
+  </div>
+{% endblock %}

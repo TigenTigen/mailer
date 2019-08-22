@@ -1,0 +1,12 @@
+{% extends 'layout/wrapper.html' %}
+
+{% block title %}
+  Thank you!
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{object.owner.username}} благодарит Вас за подписку на его рассылку "{{object.name}}".
+    На указанный адрес электронной почты направлено письмо для подтверждения подписки.
+  </p>
+{% endblock %}

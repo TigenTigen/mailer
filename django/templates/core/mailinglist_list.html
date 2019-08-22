@@ -1,0 +1,17 @@
+{% extends 'layout/wrapper.html' %}
+
+{% block title %}
+  Ваши списки рассылки
+{% endblock %}
+
+{% block content %}
+  <h2>Ваши списки рассылки:</h2>
+  <div class="list-group my-4">
+    <a href="{% url 'core:create_mailinglist'%}" class="list-group-item list-group-item-action bg-light">Создать новый список</a>
+    {% for object in object_list %}
+      <a href="{% url 'core:manage_mailinglist' pk=object.id %}" class="list-group-item list-group-item-action">{{object}}</a>
+    {% empty %}
+      <p class="my-4">Вы еще не создали ни одного списка рассылки</p>
+    {% endfor %}
+  </div>
+{% endblock %}

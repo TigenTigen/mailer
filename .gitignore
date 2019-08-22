@@ -1,5 +1,10 @@
 #######mine####### hide old project source code
 old_project
+secret_secrets
+django/celery_log
+django/celeryd.pid
+secrets/secret
+
 
 ######mine##### hide all migrations. See: https://www.reddit.com/r/django/comments/4wgf3t/best_practices_with_gitignore/
 **/migrations/**

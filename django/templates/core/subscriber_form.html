@@ -1,0 +1,16 @@
+{% extends 'layout/wrapper.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Подписаться на рассылку
+{% endblock %}
+
+{% block content %}
+  <p>Подпишитесь на рассылку "{{mailinglist.name}}":</p>
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    {{form | crispy }}
+    <button type="submit" class="btn">Подписаться</button>
+  </form>
+{% endblock %}

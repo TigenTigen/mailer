@@ -1,0 +1,17 @@
+{% extends 'layout/wrapper.html' %}
+
+{% block title %}
+  {{object.subject}}
+{% endblock %}
+
+{% block content %}
+  <h2>{{object.subject}}</h2>
+  <p class="m-0">Рассылка начата: {{object.started}}</p>
+  <p class="m-0">Рассылка окончена: {{object.finished}}</p>
+  <p class="mt-2">Текст сообщения: </p>
+  {{object.body}}
+  <p class="mt-2">Отправлено по следующим адресам:</p>
+  {% for subscribermassage in object.subscribermassage_set.all %}
+    {{subscribermassage.subscriber.email}} - {{subscribermassage.sent}}
+  {% endfor %}
+{% endblock %}
