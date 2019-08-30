@@ -150,7 +150,7 @@ class SubscriberListCreateView(generics.ListCreateAPIView):
             data = kwargs.get('data')
             mailinglist = {
                 'mailinglist': reverse(
-                    'mailinglist:api-mailinglist-detail',
+                    'core:api-mailinglist-detail',
                     kwargs={'pk': self.kwargs['mailinglist_pk']})
             }
             data.update(mailinglist)
