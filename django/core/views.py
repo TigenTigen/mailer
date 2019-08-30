@@ -147,7 +147,7 @@ class SubscriberListCreateView(generics.ListCreateAPIView):
 
     def get_serializer(self, *args, **kwargs):
         if kwargs.get('data'):
-            data = kwargs.get(data)
+            data = kwargs.get('data')
             mailinglist = {
                 'mailinglist': reverse(
                     'mailinglist:api-mailinglist-detail',
