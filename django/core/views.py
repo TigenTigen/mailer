@@ -160,3 +160,23 @@ class SubscriberRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
     permission_classes = (IsAuthenticated, CanUseMailinglist)
     serializer_class = ReadOnlyEmailSubscriberSerialazer
     queryset = Subscriber.objects.all()
+
+class MassageListCreateView(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, CanUseMailinglist)
+    serializer_class = MassageSerialazer
+
+    def get_queryset(self):
+        mailinglist_pk = self.kwargs['mailinglist_pk']
+        mailinglist = get_object_or_404(MailingList, id=mailinglist_pk)
+        return mailinglist.massage_set.all()
+
+    def get_serializer(self, *args, **kwargs):
+        if kwargs.get('data'):
+            data = kwargs.get('data')
+            mailinglist = {
+                'mailinglist': reverse(
+                    'core:api-mailinglist-detail',
+                    kwargs={'pk': self.kwargs['mailinglist_pk']})
+            }
+            data.update(mailinglist)
+        return super().get_serializer(*args, **kwargs)

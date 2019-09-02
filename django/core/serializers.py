@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from core.models import MailingList, Subscriber
+from core.models import MailingList, Subscriber, Massage
 
 class MailingListSerialazer(serializers.HyperlinkedModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all())
@@ -31,5 +31,13 @@ class ReadOnlyEmailSubscriberSerialazer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ('email', 'mailinglist')
         extra_kwargs = {
             'url': {'view_name': 'core:api-subscriber-detail'},
+            'mailinglist': {'view_name': 'core:api-mailinglist-detail'},
+        }
+
+class MassageSerialazer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Massage
+        fields = ('id', 'subject', 'body', 'mailinglist')
+        extra_kwargs = {
             'mailinglist': {'view_name': 'core:api-mailinglist-detail'},
         }

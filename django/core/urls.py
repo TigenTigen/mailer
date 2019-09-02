@@ -17,6 +17,7 @@ urlpatterns = [
     #API section:
     path('api/v1/mailinglist', views.MailingListCreateListView.as_view(), name='api-mailinglist-list'),
     path('api/v1/mailinglist/<uuid:pk>', views.MailingListRetrieveUpdateDestroyView.as_view(), name='api-mailinglist-detail'),
+    path('api/v1/mailinglist/<uuid:mailinglist_pk>/messages', views.MassageListCreateView.as_view(), name='api-massage-list'),
     path('api/v1/mailinglist/<uuid:mailinglist_pk>/subscribers', views.SubscriberListCreateView.as_view(), name='api-subscriber-list'),
     path('api/v1/subscriber/<uuid:pk>', views.SubscriberRetrieveUpdateDestroyView.as_view(), name='api-subscriber-detail'),
 ]
